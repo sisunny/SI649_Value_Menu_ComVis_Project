@@ -327,22 +327,22 @@ with st.container():
 			color=alt.Color('Franchise:N', scale=alt.Scale(domain=list(colors.keys()),
 			range=list(colors.values())))).properties(height=550, width=550))
 
-		barchart_2 = (alt.Chart(dfs_3.iloc[:15]).mark_bar(opacity=0.75).encode(
-			alt.Y('mean(Agg_Score):Q'),
-			alt.X('Franchise:N',
-			sort=alt.EncodingSortField(
-			field='mean(Agg_Score)', order='descending'
-			)),
-			color=alt.Color('Franchise:N', scale=alt.Scale(domain=list(colors.keys()),
-			range=list(colors.values())))).properties(eight=550, width=550))
+		# barchart_2 = (alt.Chart(dfs_3.iloc[:15]).mark_bar(opacity=0.75).encode(
+		# 	alt.Y('mean(Agg_Score):Q'),
+		# 	alt.X('Franchise:N',
+		# 	sort=alt.EncodingSortField(
+		# 	field='mean(Agg_Score)', order='descending'
+		# 	)),
+		# 	color=alt.Color('Franchise:N', scale=alt.Scale(domain=list(colors.keys()),
+		# 	range=list(colors.values())))).properties(eight=550, width=550))
 
 		# stacked_chart = ((barchart_2 & barchart).configure_axis(
 		# labelFontSize=15,
 		# titleFontSize=15))
 
-		stacked_chart = (barchart_2 & barchart)
+		# stacked_chart = (barchart_2 & barchart)
 
-		stacked_chart
+		# stacked_chart
 
 
 
