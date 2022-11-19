@@ -57,7 +57,7 @@ with st.container():
 		franchises shared: Arby’s, Burger King, Subway, McDonalds, Taco Bell, and Wendy’s. 
 		We will be using the corresponding box colors to indicate specific franchises moving forward.''') 
 
-	franchises_image = Image.open(r"Images\Legend.png")
+	franchises_image = Image.open(r"Images/Legend.png")
 	st.image(franchises_image, caption='The franchises of interest in this analysis.')
 
 	st.markdown('''As such, these will be the 6 main franchises that we focus on in design of our 
