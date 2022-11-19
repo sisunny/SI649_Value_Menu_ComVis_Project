@@ -1,11 +1,10 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-import plotly_express as px
 from PIL import Image
 import altair as alt
 
-df = pd.read_csv(r"Data\Value_Menu_Data_Trans.csv")
+df = pd.read_csv(r"Data/Value_Menu_Data_Trans.csv")
 
 colors = {"Arby's": '#d71921', "Burger King": '#185494', "Subway": '#23645d', 
           "McDonalds": '#ffc300', "Taco Bell": '#ec008c', "Wendy's": '#12acec'}
@@ -17,7 +16,7 @@ with st.container():
 	st.title('Stretching Your Dollar & Your Waistband')
 	st.subheader('Does the “value” of a value menu change when we decide that we value different things?')
 
-	main_image = Image.open(r"Images\Main_Image.jpg")
+	main_image = Image.open(r"Images/Main_Image.jpg")
 	st.image(main_image, caption='Common Sentiment Felt Before the Direct Deposit Hits')
 
 with st.container():
@@ -83,7 +82,7 @@ with st.container():
 
 **2.**	I priced each item based on how much it cost in the greater Ann Arbor area in October 2022. I found pretty noticeable pricing differences based on geographies, like things typically costing 1.5x more in California. See the below figure for evidence based on the price of a big-mac.''')
 
-	big_mac_image = Image.open(r"Images\how-much-big-mac-costs.png")
+	big_mac_image = Image.open(r"Images/how-much-big-mac-costs.png")
 	st.image(big_mac_image, caption='Price of a big-mac across the country. Accessed from Zippia."How Much A Big Mac Costs In Every State" Zippia.com. Sep. 5, 2022')
 
 	st.markdown('''**3.**	I assumed that the serving weight parsed from each nutritional 
