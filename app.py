@@ -257,35 +257,138 @@ with st.container():
 
 with st.container():
 
-	boxplot = ((alt.Chart(df).mark_boxplot().encode(
-	x=alt.X('Franchise:N', axis=alt.Axis(labelAngle=-45)),
-	y='Trans_Fat_G:Q',
-	color=alt.Color('Franchise:N', scale=alt.Scale(domain=list(colors.keys()),
-	    range=list(colors.values())))
-	).properties(width=550)
+	st.markdown(''' As we've ''')
 
-	+
-	alt.Chart(df).mark_rule(color='red').encode(
+	available_features = list(df.columns[5:])
+	available_features = available_features[:13]
+	# available_features.append('')
+	# available_features.append('')
+	# available_features.append('')
 
-	alt.Y('mean(Trans_Fat_G):Q', 
-	  axis=alt.Axis(title = '')))
-	)
-	|
 
-	(alt.Chart(df).mark_boxplot().encode(
-	x=alt.X('Franchise:N', axis=alt.Axis(labelAngle=-45)),
-	y='Chol_mG:Q',
-	color=alt.Color('Franchise:N', scale=alt.Scale(domain=list(colors.keys()),
-	    range=list(colors.values())))
-	).properties(width=500)
+	add_selectbox_rank_1 = st.selectbox(
+	'Select highest ranking feature to optimize for/against',
+	(available_features), index=(len(available_features)-1))
 
-	+
-	alt.Chart(df).mark_rule(color='red').encode(
-	alt.Y('mean(Trans_Fat_G):Q', 
-	  axis=alt.Axis(title = '')))
-	)).configure_axis(
-	labelFontSize=15,
-	titleFontSize=15
-	)
+	r1 = st.radio(
+	    "Optimize for or against?",
+	    ('Optimize for', 'Optimize Against'), horizontal=True)
 
-	boxplot
+	avail_features_2 = available_features.copy()
+	avail_features_2.remove(add_selectbox_rank_1)
+
+	add_selectbox_rank_2 = st.selectbox(
+	'Select the 2nd highest ranking feature to optimize for/against',
+	(avail_features_2), index=(len(avail_features_2)-1))
+
+	r2 = st.radio(
+	    "Optimize for or against?",
+	    ('Optimize for', 'Optimize Against'), key=10, horizontal=True)
+
+	avail_features_3 = avail_features_2.copy()
+	avail_features_3.remove(add_selectbox_rank_2)
+
+	add_selectbox_rank_3 = st.selectbox(
+	'Select the 3rd highest ranking feature to optimize for/against',
+	(avail_features_3), index=(len(avail_features_3)-1))
+
+	r3 = st.radio(
+	    "Optimize for or against?",
+	    ('Optimize for', 'Optimize Against'), key=11, horizontal=True)
+
+	add_selectbox_features = st.multiselect(
+    'Select features to optimize for/against',
+    (available_features))
+
+	r1_bool = (r1 != 'Optimize for')
+	r2_bool = (r2 != 'Optimize for')
+	r3_bool = (r3 != 'Optimize for')
+
+	if ((add_selectbox_rank_1 != '') & (add_selectbox_rank_2 != '') & (add_selectbox_rank_3 != '')):
+		dfs_2 = df.sort_values(by=[add_selectbox_rank_1, add_selectbox_rank_2, add_selectbox_rank_3], 
+                          ascending=[r1_bool, r2_bool, r3_bool])
+
+		new_columns = list(dfs_2.columns[:3])
+		new_columns.append(add_selectbox_rank_1)
+		new_columns.append(add_selectbox_rank_2)
+		new_columns.append(add_selectbox_rank_3)
+		new_columns.append('Agg_Score')
+
+		dfs_3 = dfs_2[new_columns]
+		dfs_3.reset_index(drop=True, inplace=True)
+
+		st.dataframe(dfs_3.iloc[:10])
+
+		barchart = (alt.Chart(dfs_3.iloc[:15]).mark_bar(opacity=0.75).encode(
+			alt.X('Agg_Score:Q'),
+			alt.Y('Menu_Item:N',
+			sort=alt.EncodingSortField(
+			field='Agg_Score', order='descending')),
+			color=alt.Color('Franchise:N', scale=alt.Scale(domain=list(colors.keys()),
+			range=list(colors.values())))).properties(height=550, width=550))
+
+		barchart_2 = (alt.Chart(dfs_3.iloc[:15]).mark_bar(opacity=0.75).encode(
+			alt.Y('mean(Agg_Score):Q'),
+			alt.X('Franchise:N',
+			sort=alt.EncodingSortField(
+			field='mean(Agg_Score)', order='descending'
+			)),
+			color=alt.Color('Franchise:N', scale=alt.Scale(domain=list(colors.keys()),
+			range=list(colors.values())))).properties(eight=550, width=550))
+
+		# stacked_chart = ((barchart_2 & barchart).configure_axis(
+		# labelFontSize=15,
+		# titleFontSize=15))
+
+		stacked_chart = (barchart_2 & barchart)
+
+		stacked_chart
+
+
+
+	# boxplot = ((alt.Chart(df).mark_boxplot().encode(
+	# x=alt.X('Franchise:N', axis=alt.Axis(labelAngle=-45)),
+	# y='Trans_Fat_G:Q',
+	# color=alt.Color('Franchise:N', scale=alt.Scale(domain=list(colors.keys()),
+	#     range=list(colors.values())))
+	# ).properties(width=550)
+
+	# +
+	# alt.Chart(df).mark_rule(color='red').encode(
+
+	# alt.Y('mean(Trans_Fat_G):Q', 
+	#   axis=alt.Axis(title = '')))
+	# )
+	# |
+
+	# (alt.Chart(df).mark_boxplot().encode(
+	# x=alt.X('Franchise:N', axis=alt.Axis(labelAngle=-45)),
+	# y='Chol_mG:Q',
+	# color=alt.Color('Franchise:N', scale=alt.Scale(domain=list(colors.keys()),
+	#     range=list(colors.values())))
+	# ).properties(width=500)
+
+	# +
+	# alt.Chart(df).mark_rule(color='red').encode(
+	# alt.Y('mean(Trans_Fat_G):Q', 
+	#   axis=alt.Axis(title = '')))
+	# )).configure_axis(
+	# labelFontSize=15,
+	# titleFontSize=15
+	# )
+
+	# boxplot
+
+# with st.container():
+
+# 	barchart = (alt.Chart(df.sort_values(by=['Agg_Score_3'], ascending=False).head(n=10)).mark_bar(opacity=0.75).encode(
+# 		alt.X('Agg_Score:Q'),
+# 		alt.Y('Menu_Item:N',
+# 		sort=alt.EncodingSortField(
+# 			field='Agg_Score', order='descending'
+# 		)),
+# 		color=alt.Color('Franchise:N', scale=alt.Scale(domain=list(colors.keys()),
+# 			range=list(colors.values())))
+# 	).properties(height=550, width=550))
+
+# 	barchart
